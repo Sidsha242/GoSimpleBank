@@ -1,6 +1,6 @@
 name: ci-test
 
-#Main job is to test code
+# Main job is to test code
 
 on: # Event that triggers the workflow
   push:
@@ -10,7 +10,7 @@ on: # Event that triggers the workflow
 
 jobs:
   test:
-    runs-on: ubuntu-latest #runner
+    runs-on: ubuntu-latest # runner
 
     services:
       # External services we want with job
@@ -39,10 +39,19 @@ jobs:
       #- name: Build
       #  run: go build -v ./...
 
-      - name: Run migation
+      - name: Install golang-migrate
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.2/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/
+          which migrate
+
+      - name: Run migration
         run: make migrateup
 
       - name: Test
         run: make test
-#will fail at first since port 5433 not setup in test
+# will fail at first since port 5433 not setup in test
 # also perform migrations
+
+# this will fail since golang-migrate tool not installed
+# since we are using ubuntu : $ curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$os-$arch.tar.gz | tar xvz
