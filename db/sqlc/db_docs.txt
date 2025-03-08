@@ -1,0 +1,32 @@
+database/sql: Provides SQL database access.
+
+Interface DBTX
+
+defines methods that any database *transaction* or *connection* must implement:
+
+-ExecContext: Executes a query without returning any rows.
+-PrepareContext: Prepares a statement for later queries or executions.
+-QueryContext: Executes a query that returns rows.
+-QueryRowContext: Executes a query that is expected to return at most one row.
+
+
+Struct Queries
+
+type Queries struct {
+    db DBTX
+}
+
+holds a reference to a DBTX interface, 
+
+Constructor New
+
+func New(db DBTX) *Queries {
+    return &Queries{db: db}
+}
+
+function creates a new Queries instance with the provided DBTX interface.
+
+
+Method WithTx
+
+allows creating a new Queries instance that uses a transaction (*sql.Tx) instead of a regular database connection

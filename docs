@@ -1,0 +1,95 @@
+//Database schema created dbdiagram.io
+
+//Database migration done using 
+https://github.com/golang-migrate/migrate
+
+go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+migrate create -ext sql -dir db/migration -seq init_schema
+
+//up script is run to make a forward change in the schema
+Upscript file will run in order of prefix number
+
+//down script is run to revert changes in up script
+Will run in reverse order of prefix number
+
+//to start databse container
+docker run --name postgresCont -p 5433:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres
+
+//to open the shell of the container
+docker exec -it postgresCont  /bin/sh
+
+//to create databse inside the container
+createdb --username=root --owner=root simple_bank
+
+//combining the above two commands
+docker exec -t postgresCont createdb --username=root --owner=root simple_bank
+
+
+//command for migration
+migrate -path db/migration -database "postgresql://root:secret@localhost:5433/simple_bank?sslmode=disable" -verbose up
+
+
+//GORM - Go Object Relational Mapping
+
+//SQLX - general purpose extensions to golang's database/sql
+No need for mapping the columns to the struct fields
+
+//SQLC - SQL Compiler
+Automatically generate Go code from SQL queries
+Catch SQL errors before running the code
+
+To install SQLC
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+
+sqlc init
+//creates sqlc.yaml file
+
+
+//edit sqlc.yaml file
+version: "2"
+sql:
+    - engine: "postgresql"
+      queries: "./db/query/"
+      schema: "./db/schema.sql"
+      gen:
+          go:
+              package: "db"
+              out: "./db/sqlc"
+
+//generate              
+sqlc generate
+
+go mod init github.com/Sidsha242
+
+go mod tidy
+
+//go postgres driver
+https://github.com/lib/pq
+
+
+//Made random testcase generator in util/random.go
+
+//to run test
+go test -v -cover ./...
+
+
+
+a database transaction is a way to group multiple database operations into a single unit of work that either all succeed or all fail. 
+Ex
+- Transfer money from one account to another
+     - Create a transfer record with amount = 10
+     - Create an account entry for acc1 with amount = -10
+     - Create an account entry for acc2 with amount = 10
+     - Subtract 10 from the balance of accout 1
+     - Add 10 to the balance of account 2
+
+Should follow ACID properties
+BEGIN..COMMIT
+BEGIN..ROLLBACK
+
+
+//in small letters - private function
+//in capital letters - public function
+
+:= cannot be used for pre-declared variables

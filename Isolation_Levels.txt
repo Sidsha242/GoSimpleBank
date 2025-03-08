@@ -1,0 +1,32 @@
+We need to use a correct isolation level
+
+ACID - Atomicity ; Consistency ; Isolation ; Durability ; 
+
+Isolation : Concurrent transactions must not affect each other
+
+Read Phenomena : interfearence among transactions
+
+ - Dirty Read : Transaction reads data written by other concurrent uncommitted transactions
+
+ - Non-Repeatable Read : Transaction reads the same row twice and sees different value because it has been modified by other committed transactions
+
+ - Phantom Read : A transaction re-executed a query to find rows different due to changes by other committed transaction.(affects multiple rows)
+
+ - Serialization Anomly : group of concurrent committed transactions impossible to achieve. 
+
+
+4 Standard Isolation level
+- Read uncommitted : Can see data written by uncommitted transaction (allows dirty read)
+- Read committed : Can only see data written by committed transaction
+- Repeatable Read : Same read query always returns same result
+-  Serializable : Execute Concurrent transactions serially 
+
+
+--------------------------------------
+
+Github actions : CI Tool
+
+Create Workflow
+- Made up of 1+ Jobs
+- Triggered by events, scheduled or manually
+
