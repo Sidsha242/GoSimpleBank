@@ -22,11 +22,5 @@ Read Phenomena : interfearence among transactions
 -  Serializable : Execute Concurrent transactions serially 
 
 
---------------------------------------
 
-Github actions : CI Tool
-
-Create Workflow
-- Made up of 1+ Jobs
-- Triggered by events, scheduled or manually
 

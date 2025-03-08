@@ -1,5 +1,7 @@
 name: ci-test
 
+#Main job is to test code
+
 on: # Event that triggers the workflow
   push:
     branches: ["main"]
@@ -9,6 +11,23 @@ on: # Event that triggers the workflow
 jobs:
   test:
     runs-on: ubuntu-latest #runner
+
+    services:
+      # External services we want with job
+      postgres:
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: secret
+          POSTGRES_USER: root
+          POSTGRES_DB: simple_bank
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,5 +39,10 @@ jobs:
       #- name: Build
       #  run: go build -v ./...
 
-      - name: Testxs
+      - name: Run migation
+        run: make migrateup
+
+      - name: Test
         run: make test
+#will fail at first since port 5433 not setup in test
+# also perform migrations
