@@ -1,3 +1,6 @@
+//Remember to get docker desktop running
+//After which start postgres db
+
 //Database schema created dbdiagram.io
 
 //Database migration done using 
@@ -93,3 +96,13 @@ BEGIN..ROLLBACK
 //in capital letters - public function
 
 := cannot be used for pre-declared variables
+
+
+Gin- web framework for Go
+go get -u github.com/gin-gonic/gin
+
+Pagination : Dont get all data from database ; divide into pages and client will ge data for only one page
+
+Viper:Find and load configuration files in JSON, TOML, YAML, ENV .Bind environment variables to the configuration values.
+
+go get github.com/spf13/viper

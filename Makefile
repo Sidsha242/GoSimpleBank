@@ -1,5 +1,11 @@
 postgres:
 	docker run --name postgresCont -p 5433:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres
+dbStart:
+	docker start postgresCont
+dbStop:
+	docker stop postgresCont
+dbRemove:
+	docker rm postgresCont
 createdb:
 	docker exec -it postgresCont createdb --username=root --owner=root simple_bank
 dropdb:
@@ -12,4 +18,11 @@ sqlc:
 	sqlc generate
 test:
 	go test -v -cover ./...
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test
+server:
+	go run main.go
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+
+
+
+#truncate:
+    #docker exec -i postgresCont psql -U root -d simple_bank -f /db/truncate_all_tables.sql
