@@ -6,7 +6,7 @@ import "github.com/spf13/viper"
 //the values are read by viper from a config file or rnv file
 
 type Config struct {
-	DBDriber string `mapstructure:"DB_DRIVER"`
+	DBDriver string `mapstructure:"DB_DRIVER"`
 	DBSource string `mapstructure:"DB_SOURCE"`
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
 }

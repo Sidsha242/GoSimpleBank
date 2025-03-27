@@ -76,6 +76,16 @@ https://github.com/lib/pq
 //to run test
 go test -v -cover ./...
 
+Struct vs Interface
+
+Interface
+- Defines behavior (methods).
+- When you need abstraction, polymorphism, or dependency injection.
+- When you want to decouple code or mock dependencies for testing.
+
+Struct
+- Represents data and encapsulates state and behavior.(Implementd the behavior)
+- When you need a concrete type with specific fields and methods.
 
 
 a database transaction is a way to group multiple database operations into a single unit of work that either all succeed or all fail. 
@@ -106,3 +116,29 @@ Pagination : Dont get all data from database ; divide into pages and client will
 Viper:Find and load configuration files in JSON, TOML, YAML, ENV .Bind environment variables to the configuration values.
 
 go get github.com/spf13/viper
+
+//Mock DB
+- Independent test to avoid conflicts
+- Faster tests
+- 100% coverage
+
+How to mock db
+1. Use fake db: using memory 
+2. Use db stubs : GoMock ; generate and build stubs that returns hard-coded values
+
+GoMock
+go get github.com/golang/mock/mockgen@v1.6.0
+
+
+ls -l ~/go/bin
+
+in order to use mockgen we need to create an interface for the mock db
+
+reflect mode : to generate mock for an interface
+
+mockgen -package mdb pleBank> go get github.com/golang/mock/mockgen/modelockdb -destination db/mock/stogitv1.6.0re.go github.com/Sidsha242/simdb/pleBank> go get github.com/Sidsha242/simple_bank/db/sqlcple_bank/db/sqlc Store
+
+
+MockStore (has all important functions) and MockRecorder
+
+//GoMock helps write unit tests for the code that interacts with the database

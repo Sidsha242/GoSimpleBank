@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/Sidsha242/api"
-	db "github.com/Sidsha242/db/sqlc"
-	"github.com/Sidsha242/util"
+	"github.com/Sidsha242/simple_bank/api"
+	db "github.com/Sidsha242/simple_bank/db/sqlc"
+	"github.com/Sidsha242/simple_bank/util"
 	_ "github.com/lib/pq"
 )
 
@@ -23,7 +23,7 @@ func main() {
 	}
 
 	//establish connection to database
-	conn, err := sql.Open(config.DBDriber,config.DBSource ) //creates a new sql.DB object
+	conn, err := sql.Open(config.DBDriver,config.DBSource ) //creates a new sql.DB object
 	if err != nil {
 		log.Fatal("cannot connect to db: ", err)
 	}

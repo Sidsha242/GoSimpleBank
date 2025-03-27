@@ -4,9 +4,14 @@ import (
 	"database/sql"
 	"net/http"
 
-	db "github.com/Sidsha242/db/sqlc"
+	db "github.com/Sidsha242/simple_bank/db/sqlc"
 	"github.com/gin-gonic/gin"
 )
+
+//This file defines the HTTP handlers for managing accounts
+//Handlers are part of Server struct ;
+//Handlers will use Gin to parse HTTP requests and send responses (give gin context as input)
+//Handlers will interact with database through Store interface
 
 //make type struct for input parameters then make function which will handle the request
 //func will take server pointer and gin context as input
