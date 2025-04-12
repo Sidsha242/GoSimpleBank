@@ -15,8 +15,9 @@ import (
 //createRandomAccount is a helper function to create a random account for testing ..will not be run during unit test as it does not begin with Test
 //t is a testing.T object to log errors and failures
 func createRandomAccount(t *testing.T) Account {
+	user := createRandomUser(t) //creating random user for testing
 	arg := CreateAccountParams{
-		Owner:    util.RandomOwner(),
+		Owner:    user.Username,
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	} //struct to pass values to the function
@@ -46,9 +47,10 @@ func TestCreateAccount(t *testing.T) {
 //dont make unit test relly on each other
 //unit test should be independent
 func TestGetAccount(t *testing.T) {
-	//creating account to get the account
+	//creating random account for testing
 	createAccount := createRandomAccount(t)
 
+	//getting the account from the database using the id of the created account...we will compare both of these account values
 	account, err := testQueries.GetAccount(context.Background(), createAccount.ID)
 
 	require.NoError(t, err)

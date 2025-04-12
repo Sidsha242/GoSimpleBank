@@ -8,13 +8,24 @@ https://github.com/golang-migrate/migrate
 
 go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+//to create new migration
 migrate create -ext sql -dir db/migration -seq init_schema
+
+...likewise
+
+//to create new migrartion
+migrate create -ext sql -dir db/migration -seq add_users
+
+..add postgres file with create table commands inside
+
 
 //up script is run to make a forward change in the schema
 Upscript file will run in order of prefix number
 
 //down script is run to revert changes in up script
 Will run in reverse order of prefix number
+
+[ for migratedown change dirty value to false under schema_migration table and then run migratedown ..all tables will go ]
 
 //to start databse container
 docker run --name postgresCont -p 5433:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres
@@ -142,3 +153,9 @@ mockgen -package mdb pleBank> go get github.com/golang/mock/mockgen/modelockdb -
 MockStore (has all important functions) and MockRecorder
 
 //GoMock helps write unit tests for the code that interacts with the database
+
+
+Password is hashed using bcrypt hashing function (cost which will decide the number of iterations of the algorithm ) (salt to use in itertions to protect againt Rainbow Table Attack )
+
+---|-----|-----------|--------------|
+alg|cost | salt      |  hash        |

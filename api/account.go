@@ -6,12 +6,13 @@ import (
 
 	db "github.com/Sidsha242/simple_bank/db/sqlc"
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 )
 
 //This file defines the HTTP handlers for managing accounts
-//Handlers are part of Server struct ;
+//Handlers are part of Server struct (give server pointer as input)
 //Handlers will use Gin to parse HTTP requests and send responses (give gin context as input)
-//Handlers will interact with database through Store interface
+//Handlers will interact with database through Store interface (present inside Server struct)call Querier funcs
 
 //make type struct for input parameters then make function which will handle the request
 //func will take server pointer and gin context as input
@@ -41,8 +42,17 @@ func (server *Server) createAccount(ctx *gin.Context) { //receiving server point
 		Currency: req.Currency,
 	}
 
-	account, err := server.store.CreateAccount(ctx, arg)//input context , argument
+	account, err := server.store.CreateAccount(ctx, arg)//calling db Querier function // input context , argument
 	if err != nil {
+		pqErr, _ := err.(*pq.Error) //check if error is of type pqError (Postgres error)
+		{
+			switch pqErr.Code.Name() {
+			case "unique_violation", "foreign_key_violation":
+				ctx.JSON(http.StatusForbidden, errorResponse(err)) //forbidden error if account already exists or user does not exist
+				return
+			}
+				
+		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}//error in inserting into database
