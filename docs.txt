@@ -95,7 +95,7 @@ Interface
 - When you want to decouple code or mock dependencies for testing.
 
 Struct
-- Represents data and encapsulates state and behavior.(Implementd the behavior)
+- Represents data and encapsulates state and behavior.(Implements the behavior)
 - When you need a concrete type with specific fields and methods.
 
 
@@ -159,3 +159,25 @@ Password is hashed using bcrypt hashing function (cost which will decide the num
 
 ---|-----|-----------|--------------|
 alg|cost | salt      |  hash        |
+
+
+JWT Signing Algos
+Symmetric digital signature
+- The same secret key is used to sign and verify token
+- For local user
+- SHA(Secure Hash Algorithm)
+----------------------------------------
+Asymmetric digital signature 
+- Private key used to sign token
+- Public key used to verify token
+- For public use 
+
+Problem with JWT
+- Weak Algos
+- Trivial Forgery
+
+Paseto (Platform Agnostic Security Tokens)
+- Stronger Algos
+- Non-trivial Forgery
+
+

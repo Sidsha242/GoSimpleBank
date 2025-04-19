@@ -19,7 +19,7 @@ Read Phenomena : interfearence among transactions
 - Read uncommitted : Can see data written by uncommitted transaction (allows dirty read)
 - Read committed : Can only see data written by committed transaction
 - Repeatable Read : Same read query always returns same result
--  Serializable : Execute Concurrent transactions serially 
+- Serializable : Execute Concurrent transactions serially 
 
 
 
