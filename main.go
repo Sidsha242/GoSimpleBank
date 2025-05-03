@@ -30,7 +30,11 @@ func main() {
 
 	store:= db.NewStore(conn) //with connection we can create a store
 
-	server:= api.NewServer(store) //with store creating new server
+	server, err:= api.NewServer(config, store) //with store creating new server
+
+	if err != nil {
+		log.Fatal("cannot create server: ", err)
+	}
 
 	err = server.Run(config.ServerAddress) //running server on port 8080
 	if err != nil {

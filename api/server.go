@@ -3,7 +3,11 @@
 package api
 
 import (
+	"fmt"
+
 	db "github.com/Sidsha242/simple_bank/db/sqlc"
+	"github.com/Sidsha242/simple_bank/token"
+	"github.com/Sidsha242/simple_bank/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,6 +16,8 @@ type Server struct {
 	store db.Store //will allow us to interact with database 
 
 	router *gin.Engine //will allow us to define routes and handlers
+
+	tokenMaker token.Maker //will allow us to create and verify tokens (JWTs)
 }
 
 
@@ -21,8 +27,21 @@ type Server struct {
 */
 
 //Will create a new HTTP server and setup routing
-func NewServer(store db.Store) *Server {
-	server := &Server{store: store} //Intialize a Server instance with provided store
+func NewServer(config util.Config, store db.Store) (*Server,error) {
+
+    tokenMaker, err := token.NewJWTMaker(config.JWTSecret) //create a new JWT token maker with a secret key
+
+
+	if err != nil {
+		return nil, fmt.Errorf("cannot create token mater: %w", err) //return nil if error occurs while creating token maker
+	}
+
+	server := &Server{
+		store: store,
+		tokenMaker: tokenMaker,
+	} 
+		
+	//Intialize a Server instance with provided store
 	router := gin.Default() //Create new Gin router
 
 	//Define routes and handlers
@@ -38,16 +57,20 @@ func NewServer(store db.Store) *Server {
 
 	router.POST("/users", server.createUser)
 	router.GET("/users/:username", server.getUser)
-
+	router.POST("/users/login", server.loginUser)
 
 
 	//assign router to the server instance we made earlier (server.router)
 	server.router = router
-	return server //return initialized server instance
+
+	return server, nil //return initialized server instance
 }
 
 //runs the http server on the given address
 func (server *Server) Run(address string) error {
+	if server.router == nil {
+        return fmt.Errorf("router is not initialized")
+    }
 	return server.router.Run(address)
 }
 

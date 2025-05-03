@@ -26,20 +26,24 @@ func NewJWTMaker(secretKey string) (Maker, error) {
 
 //JWTMaker implements the Maker interface by providing concrete implementations for the CreateToken and VerifyToken
 
-func (maker *JWTMaker) CreateToken(username string, duration time.Duration) (string, error){
- 	payload, err := NewPayload(username, duration) //create new payload
-	if err != nil {
-		return "", err
-	}
+func (maker *JWTMaker) CreateToken(username string, duration time.Duration) (string, *Payload, error) {
+    // Create a new payload
+    payload, err := NewPayload(username, duration)
+    if err != nil {
+        return "", nil, err
+    }
 
+    // Create the JWT token
+    jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 
-	//create jwt token
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
+    // Sign the token with the secret key
+    token, err := jwtToken.SignedString([]byte(maker.secretKey))
+    if err != nil {
+        return "", nil, err
+    }
 
-	return jwtToken.SignedString([]byte(maker.secretKey)) //sign the token with the secret key and return it
-
-	//signing algorithm, claims (payload)
-
+    // Return both the token and the payload
+    return token, payload, nil
 }
 	
 func (maker *JWTMaker)	VerifyToken(tokenString string) (*Payload, error) {

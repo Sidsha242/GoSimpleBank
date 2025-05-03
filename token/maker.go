@@ -7,7 +7,7 @@ import "time"
 //***Interfaces are particularly useful when you need to define a contract for behavior while allowing multiple implementations.***
 
 type Maker interface {
-	CreateToken(username string, duration time.Duration) (string, error)
+	CreateToken(username string, duration time.Duration) (string, *Payload, error)
 	
 	VerifyToken(token string) (*Payload, error)
 	

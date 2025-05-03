@@ -29,9 +29,7 @@ func TestGetAccountAPI(t *testing.T) { //test take a testing object as an argume
 
 	store.EXPECT().GetAccount(gomock.Any(), gomock.Eq(account.ID)).Times(1).Return(account, nil) //function will be called 1 time
 
-
-
-	server := NewServer(store) //test server created
+	server := newTestServer(t , store) //test server created
 	recorder:=httptest.NewRecorder() //used to record the http response
 
 	url := fmt.Sprintf("/accounts/%d", account.ID) //url for getaccount api constructed 
